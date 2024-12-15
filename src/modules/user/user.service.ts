@@ -8,7 +8,7 @@ import { User, UserDocument } from '../entities';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async findByUsername(username: string): Promise<User | null> {
+  async findByUsername(username: string): Promise<UserDocument | null> {
     const userDocument = await this.userModel.findOne({ username }).exec();
 
     if (!userDocument) {

@@ -9,7 +9,7 @@ export class ProjectController {
 
   @Post('')
   @UseGuards(JwtAuthGuard)
-  createProject(@Body() project: Partial<Project>, @Req() req: any) {
+  createProject(@Body() project: Partial<Project>, @Req() req) {
     const userId: string = req.user.userId;
 
     return this.projectService.createProject({ ...project, userId });
@@ -17,7 +17,7 @@ export class ProjectController {
 
   @Get('')
   @UseGuards(JwtAuthGuard)
-  getProjects(@Req() req: any) {
+  getProjects(@Req() req) {
     const userId: string = req.user.userId;
 
     return this.projectService.getProjects(userId);

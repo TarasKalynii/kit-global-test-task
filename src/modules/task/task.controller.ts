@@ -27,7 +27,7 @@ export class TaskController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create task' })
   @ApiResponse({ status: 200, description: 'Task created', type: Task })
-  async createTask(@Body() task: CreateTaskDto, @Req() req: any) {
+  async createTask(@Body() task: CreateTaskDto, @Req() req) {
     const userId: string = req.user.userId;
     const projectId: string = task.projectId;
     await this.projectService.isProjectOwner(projectId, userId);
@@ -40,7 +40,7 @@ export class TaskController {
   async updateTask(
     @Param('id') id: string,
     @Body() task: UpdateTaskDto,
-    @Req() req: any,
+    @Req() req,
   ) {
     const userId: string = req.user.userId;
     // TODO: can be moved to Guard
@@ -51,7 +51,7 @@ export class TaskController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async deleteTask(@Param('id') id: string, @Req() req: any) {
+  async deleteTask(@Param('id') id: string, @Req() req) {
     const userId: string = req.user.userId;
     await this.taskService.isTaskOwner(id, userId);
 
