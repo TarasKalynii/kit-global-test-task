@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  kit-global-test-task:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: kit-global-test-task-prod
+    ports:
+      - "3000:3000"
+    command: npm run start:prod
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

@@ -1,0 +1,25 @@
+services:
+  kit-global-test-task:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kit-global-test-task-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
