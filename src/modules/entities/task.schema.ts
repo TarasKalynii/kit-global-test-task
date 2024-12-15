@@ -1,8 +1,8 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { type Document } from 'mongoose'
-import { ApiProperty } from '@nestjs/swagger'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 
-export type TaskDocument = Task & Document
+export type TaskDocument = Task & Document;
 
 export enum TaskStatus {
   NEW = 'NEW',
@@ -15,20 +15,20 @@ export class Task {
   @Prop({ required: true })
   @ApiProperty({
     type: 'string',
-    description: 'Task title'
+    description: 'Task title',
   })
-    title: string
+  title: string;
 
   @Prop({ default: TaskStatus.NEW })
   @ApiProperty({
     type: 'string',
     enum: TaskStatus,
-    description: 'Task status'
+    description: 'Task status',
   })
-    status: TaskStatus
+  status: TaskStatus;
 
   @Prop({ required: true, ref: 'Project' })
-    projectId: string
+  projectId: string;
 }
 
-export const TaskSchema = SchemaFactory.createForClass(Task)
+export const TaskSchema = SchemaFactory.createForClass(Task);

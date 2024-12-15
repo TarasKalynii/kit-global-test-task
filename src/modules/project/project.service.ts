@@ -1,45 +1,41 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException
-} from '@nestjs/common'
-import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
-import {
-  Task,
-  type TaskDocument,
-  Project,
-  type ProjectDocument
-} from '../entities'
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Task, TaskDocument, Project, ProjectDocument } from '../entities';
 
 @Injectable()
 export class ProjectService {
-  constructor (
-    @InjectModel(Task.name) private readonly taskModel: Model<TaskDocument>,
-    @InjectModel(Project.name)
-    private readonly projectModel: Model<ProjectDocument>
+  constructor(
+    @InjectModel(Task.name) private taskModel: Model<TaskDocument>,
+    @InjectModel(Project.name) private projectModel: Model<ProjectDocument>,
   ) {}
 
-  async createProject (project: Partial<Project>): Promise<Project> {
-    return await new this.projectModel(project).save()
+  async createProject(project: Partial<Project>): Promise<Project> {
+    return new this.projectModel(project).save();
   }
 
-  async getProjects (userId: string): Promise<Project[]> {
-    return await this.projectModel
+  async getProjects(userId: string): Promise<Project[]> {
+    return this.projectModel
       .find({ userId })
       .populate('taskIds', undefined, this.taskModel)
-      .exec()
+      .exec();
   }
 
-  async isProjectOwner (projectId: string, userId: string): Promise<void> {
-    const project = await this.projectModel.findById(projectId).exec()
+  async isProjectOwner(projectId: string, userId: string): Promise<boolean> {
+    const project = await this.projectModel.findById(projectId).exec();
 
     if (!project) {
-      throw new NotFoundException('Project not found')
+      throw new NotFoundException('Project not found');
     }
 
     if (project.userId !== userId) {
-      throw new ForbiddenException('You do not own this project')
+      throw new ForbiddenException('You do not own this project');
     }
+
+    return true;
   }
 }
