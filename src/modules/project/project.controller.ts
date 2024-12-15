@@ -1,25 +1,25 @@
-import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
-import { ProjectService } from './project.service';
-import { Project } from '../entities';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common'
+import { ProjectService } from './project.service'
+import { type Project } from '../entities'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 
 @Controller('projects')
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor (private readonly projectService: ProjectService) {}
 
   @Post('')
   @UseGuards(JwtAuthGuard)
-  createProject(@Body() project: Partial<Project>, @Req() req: any) {
-    const userId: string = req.user.userId;
+  async createProject (@Body() project: Partial<Project>, @Req() req) {
+    const userId: string = req.user.userId
 
-    return this.projectService.createProject({ ...project, userId });
+    return await this.projectService.createProject({ ...project, userId })
   }
 
   @Get('')
   @UseGuards(JwtAuthGuard)
-  getProjects(@Req() req: any) {
-    const userId: string = req.user.userId;
+  async getProjects (@Req() req) {
+    const userId: string = req.user.userId
 
-    return this.projectService.getProjects(userId);
+    return await this.projectService.getProjects(userId)
   }
 }

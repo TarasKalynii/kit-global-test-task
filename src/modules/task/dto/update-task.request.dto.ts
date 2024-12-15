@@ -1,12 +1,12 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { TaskStatus } from '../../entities';
+import { IsEnum, IsOptional, IsString } from 'class-validator'
+import { TaskStatus } from '../../entities'
 
 export class UpdateTaskDto {
   @IsOptional()
   @IsString()
-  title?: string;
+    title?: string
 
   @IsOptional()
   @IsEnum(TaskStatus)
-  status?: TaskStatus;
+    status?: TaskStatus
 }
